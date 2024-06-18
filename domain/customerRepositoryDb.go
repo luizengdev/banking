@@ -2,11 +2,11 @@ package domain
 
 import (
 	"database/sql"
-	"log"
 	"time"
 
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/luizengdev/banking/errs"
+	"github.com/luizengdev/banking/logger"
 )
 
 // CustomerRepositoryDb is a CustomerRepository implementation that uses a MySQL database.
@@ -27,7 +27,7 @@ func (d CustomerRepositoryDb) FindAll(status string) ([]Customer, *errs.AppError
 		rows, err = d.client.Query(findAllSql, status)
 	}
 	if err != nil {
-		log.Println("Error while querying customers table " + err.Error())
+		logger.Error("Error while querying customers table " + err.Error())
 		return nil, errs.NewUnexpectedError("Unexpected database error")
 	}
 
@@ -36,7 +36,7 @@ func (d CustomerRepositoryDb) FindAll(status string) ([]Customer, *errs.AppError
 		c := Customer{}
 		err := rows.Scan(&c.Id, &c.Name, &c.City, &c.Zipcode, &c.DateOfBirth, &c.Status)
 		if err != nil {
-			log.Println("Error while scanning customers table " + err.Error())
+			logger.Error("Error while scanning customers table " + err.Error())
 			return nil, errs.NewUnexpectedError("Unexpected database error")
 		}
 		customers = append(customers, c)
@@ -55,7 +55,7 @@ func (d CustomerRepositoryDb) FindById(id string) (*Customer, *errs.AppError) {
 		if err == sql.ErrNoRows {
 			return nil, errs.NewNotFoundError("Customer not found")
 		} else {
-			log.Println("Error while scanning customer table ", err.Error())
+			logger.Error("Error while scanning customer table " + err.Error())
 			return nil, errs.NewUnexpectedError("Unexpected database error")
 		}
 	}
