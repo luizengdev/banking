@@ -2,7 +2,6 @@ package app
 
 import (
 	"encoding/json"
-	"encoding/xml"
 	"net/http"
 
 	"github.com/gorilla/mux"
@@ -22,15 +21,11 @@ func (ch *CustomerHandlers) getAllCustomers(w http.ResponseWriter, r *http.Reque
 	// 	{"Jill", "Los Angeles", "90001"},
 	// }
 
-	customers, _ := ch.service.GetAllCustomers()
-
-	// Sets the response content type based on the request header
-	if r.Header.Get("Content-Type") == "application/xml" {
-		w.Header().Set("Content-Type", "application/xml")
-		xml.NewEncoder(w).Encode(customers)
+	customers, err := ch.service.GetAllCustomers()
+	if err != nil {
+		writeResponse(w, http.StatusNotFound, err)
 	} else {
-		w.Header().Set("Content-Type", "application/json")
-		json.NewEncoder(w).Encode(customers)
+		writeResponse(w, http.StatusOK, customers)
 	}
 }
 
