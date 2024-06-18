@@ -4,11 +4,11 @@ import "github.com/luizengdev/banking/errs"
 
 // Customer represents a customer with personal and contact information.
 type Customer struct {
-	Id          string
+	Id          string `db:"customer_id"`
 	Name        string
 	City        string
 	Zipcode     string
-	DateOfBirth string
+	DateOfBirth string `db:"date_of_birth"`
 	Status      string
 }
 
