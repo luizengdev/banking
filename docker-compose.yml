@@ -1,0 +1,20 @@
+version: "3.9"
+services:
+  mysql_db:
+    container_name: banking_mysql_db
+    image: mysql:latest
+    environment:
+      MYSQL_ROOT_PASSWORD: 1234
+      MYSQL_DATABASE: banking
+      MYSQL_USER: user
+      MYSQL_PASSWORD: password
+    ports:
+      - "3306:3306"
+    volumes:
+      - ./.mysqldata:/var/lib/mysql
+
+volumes:
+  mysqldata: {}
+# docker compose up -d mysql_db
+# docker compose up --detach
+# docker compose down
