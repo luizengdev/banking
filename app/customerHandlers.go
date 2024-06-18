@@ -15,15 +15,10 @@ type CustomerHandlers struct {
 
 // getAllCustomers handles the HTTP GET request to fetch all customers.
 func (ch *CustomerHandlers) getAllCustomers(w http.ResponseWriter, r *http.Request) {
-	// customers := []Customer{
-	// 	{"John", "New York", "10001"},
-	// 	{"Jane", "San Francisco", "94101"},
-	// 	{"Jill", "Los Angeles", "90001"},
-	// }
 
 	customers, err := ch.service.GetAllCustomers()
 	if err != nil {
-		writeResponse(w, http.StatusNotFound, err)
+		writeResponse(w, err.Code, err.AsMessage())
 	} else {
 		writeResponse(w, http.StatusOK, customers)
 	}

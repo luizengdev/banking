@@ -14,6 +14,6 @@ type Customer struct {
 
 // CustomerRepository defines the operations available for working with customer data.
 type CustomerRepository interface {
-	FindAll() ([]Customer, error)
+	FindAll() ([]Customer, *errs.AppError)
 	FindById(string) (*Customer, *errs.AppError)
 }
